@@ -1,0 +1,59 @@
+<html lang="it">
+<head>
+    <title>Fingerprint-based key-pair generation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+<div class="main-block">
+    <form action="/generate" method="post" enctype="multipart/form-data">
+        <!-- LOGO -->
+        <div>
+            <img src="../static/fingerprint.png" alt="logo"/>
+        </div>
+        <!-- SELECT IMAGE -->
+        <div>
+            <label for="name">Select Image:</label>
+        </div>
+        <div id='preview-file'>
+            <input
+                    type="file"
+                    name="image_upload"
+                    accept="image/bmp"
+                    onchange="loadFile(event)"
+                    multiple/>
+            <script>
+                var loadFile = function (event) {
+                    // img tag for the image preview
+                    var output = document.getElementById('output');
+                    // src = URL of the file
+                    output.src = URL.createObjectURL(event.target.files[0]);
+                    // free memory
+                    output.onload = function () {
+                        URL.revokeObjectURL(output.src)
+                    }
+                };
+            </script>
+        </div>
+        <!-- PREVIEW -->
+        <div>
+            <label>Preview:</label>
+        </div>
+        <div class="preview">
+            <img id="output" alt="">
+        </div>
+        <!-- GENERATE -->
+        <div>
+            <input type="submit" value="GENERATE"/>
+        </div>
+    </form>
+    <!-- KEYS -->
+    <div>
+        {% if public_key %}
+            <br>Public key: {{ public_key }}
+            <br>Private key: {{ private_key }}
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
